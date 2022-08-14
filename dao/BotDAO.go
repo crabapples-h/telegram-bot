@@ -54,12 +54,12 @@ func FindBotByUsername1(username string) entity.Bot {
 	return entity.Bot{}
 }
 
-func SaveBot(bot entity.Bot) bool {
+func SaveBot(bot *entity.Bot) bool {
 	temp := FindBotByUsername(bot.Username)
 	if utils.IsEmpty(temp.Id) || len(temp.Id) <= 0 {
 		UUID, _ := uuid.NewRandom()
 		bot.Id = UUID.String()
-		length, err := ormer.Insert(&bot)
+		length, err := ormer.Insert(bot)
 		if err != nil {
 			log.Printf("添加机器人出现异常:[%s]\n", err.Error())
 			return false
@@ -69,6 +69,15 @@ func SaveBot(bot entity.Bot) bool {
 	} else {
 		temp.GroupName = bot.GroupName
 		temp.Token = bot.Token
+		temp.ChatId = bot.ChatId
+		temp.BotName = bot.BotName
+		temp.CallbackUrl = bot.CallbackUrl
+		length, err := ormer.Update(temp)
+		if err != nil {
+			log.Printf("更新机器人出现异常:[%s]\n", err.Error())
+			return false
+		}
+		log.Printf("更新机器人完成,添加记录:[%d]条\n", length)
+		return length >= 0
 	}
-	return false
 }

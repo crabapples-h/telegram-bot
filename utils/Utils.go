@@ -2,10 +2,14 @@ package utils
 
 import (
 	"log"
+	"net/http"
+	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
 )
+
+const HttpProxyUrl = "http://127.0.0.1:10800"
 
 func Unicode2Zh(raw []byte) string {
 	log.Printf("开始转换字符串[unicode]->[中文]")
@@ -20,4 +24,12 @@ func Unicode2Zh(raw []byte) string {
 
 func IsEmpty(obj interface{}) bool {
 	return reflect.DeepEqual(obj, nil)
+}
+func SetHttpProxy(client *http.Client) {
+	ProxyURL, _ := url.Parse(HttpProxyUrl)
+	client = &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyURL(ProxyURL),
+		},
+	}
 }
