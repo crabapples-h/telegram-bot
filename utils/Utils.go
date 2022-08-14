@@ -18,6 +18,6 @@ func Unicode2Zh(raw []byte) string {
 	return str
 }
 
-func IsEmpty(obj, Type interface{}) bool {
-	return reflect.DeepEqual(obj, Type)
+func IsEmpty(obj interface{}) bool {
+	return reflect.DeepEqual(obj, nil)
 }

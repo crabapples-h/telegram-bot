@@ -4,10 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	myApi "telegram-bot/api"
+	_ "telegram-bot/dao"
 )
 
 func init() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	gin.ForceConsoleColor()
+	gin.SetMode(gin.ReleaseMode)
 }
 
 func getProxy(context *gin.Context) {
